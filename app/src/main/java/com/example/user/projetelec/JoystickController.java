@@ -40,8 +40,8 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
     {
         super.onCreate(savedInstanceState);
 
-        //Intent newint = getIntent();
-        //address = newint.getStringExtra(MainActivity.EXTRA_ADDRESS); //receive the address of the bluetooth device
+        Intent newint = getIntent();
+        address = newint.getStringExtra(MainActivity.EXTRA_ADDRESS); //receive the address of the bluetooth device
 
         //view of the ledControl
         setContentView(R.layout.activity_joystick_controller);
@@ -52,7 +52,7 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
         joy2=findViewById(R.id.Joy2);
 
 
-        //new ConnectBT().execute(); //Call the class to connect
+        new ConnectBT().execute(); //Call the class to connect
 
 
 
@@ -128,54 +128,54 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
     }
 
     public void leftJoystick(float xPercent, float yPercent){
-    //    if (btSocket!=null)
-    //    {
+        if (btSocket!=null)
+        {
             if ((xPercent>0.2) && (yPercent<0.5) && (yPercent>-0.5)){
-                //try
-                //{
-                    //btSocket.getOutputStream().write("1D".toString().getBytes());
+                try
+                {
+                    btSocket.getOutputStream().write("1D".toString().getBytes());
                     Log.d("1D", "1D");
-                //}
-               // catch (IOException e)
-               // {
-              //      msg("Error");
-               // }
+                }
+                catch (IOException e)
+                {
+                    msg("Error");
+                }
             }
             else if ((xPercent<-0.2) && (yPercent<0.5) && (yPercent>-0.5)){
                 Log.d("1G", "1G");
-                //try
-                //{
-                //    btSocket.getOutputStream().write("1G".toString().getBytes());
-               // }
-                //catch (IOException e)
-               // {
-               //     msg("Error");
-               // }
+                try
+                {
+                    btSocket.getOutputStream().write("1G".toString().getBytes());
+                }
+                catch (IOException e)
+                {
+                    msg("Error");
+                }
             }
             else if ((yPercent<-0.2) && (xPercent<0.5) &&(xPercent>-0.5)){
                 Log.d("1H", "1H");
-                /*try
+                try
                 {
                     btSocket.getOutputStream().write("1H".toString().getBytes());
                 }
                 catch (IOException e)
                 {
                     msg("Error");
-                }*/
+                }
             }
             else if ((yPercent>0.2) && (xPercent<0.5) &&(xPercent>-0.5)){
                 Log.d("1B", "1B");
-                /*try
+                try
                 {
                     btSocket.getOutputStream().write("1B".toString().getBytes());
                 }
                 catch (IOException e)
                 {
                     msg("Error");
-                }*/
+                }
             }
 
-       // }
+        }
     }
 
     public void rightJoystick(float xPercent, float yPercent){
