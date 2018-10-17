@@ -38,8 +38,13 @@ public class MainActivity extends AppCompatActivity {
         btnPaired = (Button)findViewById(R.id.button);
         devicelist = (ListView)findViewById(R.id.listView);
 
+        String address = "coucou";
+        Intent i = new Intent(MainActivity.this, JoystickController.class);
+        i.putExtra(EXTRA_ADDRESS, address); //this will be received at ledControl (class) Activity
+        startActivity(i);
+
         //if the device has bluetooth
-        myBluetooth = BluetoothAdapter.getDefaultAdapter();
+        /*myBluetooth = BluetoothAdapter.getDefaultAdapter();
 
         if(myBluetooth == null)
         {
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 pairedDevicesList();
             }
-        });
+        });*/
     }
 
     private void pairedDevicesList()

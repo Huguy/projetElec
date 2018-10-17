@@ -37,11 +37,12 @@
         android:background="@color/colorPrimaryDark">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/disconnect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Deconnexion"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            />
 
 
 
@@ -50,13 +51,15 @@
             android:layout_height="wrap_content"
             android:text="Commandes"
             android:layout_centerInParent="true"
+            android:id="@+id/commandes"
             />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bras"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:id="@+id/bras"/>
 
     </RelativeLayout>
 

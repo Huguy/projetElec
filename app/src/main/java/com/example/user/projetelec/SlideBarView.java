@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.transition.Slide;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -109,6 +110,7 @@ public class SlideBarView extends SurfaceView implements SurfaceHolder.Callback 
         if (e.getAction() != e.ACTION_UP) {
             int id = getId();
             float displacement = 0;
+            Log.d("err","ALLLLOOOOOOOOOOOOOOOOOOOOO");
             switch (id){
                 case R.id.slide1 :
                     displacement = e.getY();

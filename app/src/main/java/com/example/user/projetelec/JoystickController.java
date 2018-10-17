@@ -21,12 +21,16 @@ import java.io.IOException;
 import java.util.UUID;
 import com.example.user.projetelec.R;
 
+import static com.example.user.projetelec.MainActivity.EXTRA_ADDRESS;
+
 
 public class JoystickController extends AppCompatActivity implements JoystickView.JoystickListener {
 
     JoystickView joy1;
     JoystickView joy2;
     Button btnDis;
+    Button commands;
+    Button pince;
     String address = null;
     private ProgressDialog progress;
     BluetoothAdapter myBluetooth = null;
@@ -48,11 +52,13 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
 
         //call the widgtes
         btnDis = findViewById(R.id.button);
+        pince = findViewById(R.id.pince);
+        commands = findViewById(R.id.commandes);
         joy1=findViewById(R.id.Joy1);
         joy2=findViewById(R.id.Joy2);
 
 
-        new ConnectBT().execute(); //Call the class to connect
+        //new ConnectBT().execute(); //Call the class to connect
 
 
 
@@ -65,6 +71,15 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
             }
         });
 
+        pince.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(JoystickController.this, SlideBarController.class);
+                i.putExtra(EXTRA_ADDRESS, address); //this will be received at ledControl (class) Activity
+                startActivity(i);
+            }
+        });
+
     }
 
     @Override
@@ -73,10 +88,12 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
             case R.id.Joy1:
                 Log.d("Left", "Xpercent : " + xPercent + " Y percent : " + yPercent);
                 leftJoystick(xPercent, yPercent);
+                break;
 
             case R.id.Joy2:
                 Log.d("Right", "Xpercent : " + xPercent + " Y percent : " + yPercent);
                 rightJoystick(xPercent, yPercent);
+                break;
 
         }
 
