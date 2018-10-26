@@ -36,8 +36,9 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
     BluetoothAdapter myBluetooth = null;
     BluetoothSocket btSocket = null;
     private boolean isBtConnected = false;
+    private float xJ1, xJ2, yJ1, yJ2;
     //SPP UUID. Look for it
-    static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,7 +46,7 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
         super.onCreate(savedInstanceState);
 
         Intent newint = getIntent();
-        address = newint.getStringExtra(MainActivity.EXTRA_ADDRESS); //receive the address of the bluetooth device
+        //address = newint.getStringExtra(MainActivity.EXTRA_ADDRESS); //receive the address of the bluetooth device
 
         //view of the ledControl
         setContentView(R.layout.activity_joystick_controller);
@@ -58,8 +59,9 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
         joy2=findViewById(R.id.Joy2);
 
 
-        //new ConnectBT().execute(); //Call the class to connect
 
+
+        //new ConnectBT().execute(); //Call the class to connect
 
 
         btnDis.setOnClickListener(new View.OnClickListener()
@@ -80,11 +82,22 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
             }
         });
 
+        commands.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent (JoystickController.this, Commandes.class);
+                i.putExtra(EXTRA_ADDRESS, address); //this will be received at ledControl (class) Activity
+                startActivity(i);
+            }
+        });
+
+        btSocket = Bluetooth.getInstance().getCurrentBluetoothConnection();
+
     }
 
     @Override
     public void onJoystickMoved(float xPercent, float yPercent, int id){
-        switch (id){
+        /*switch (id){
             case R.id.Joy1:
                 Log.d("Left", "Xpercent : " + xPercent + " Y percent : " + yPercent);
                 leftJoystick(xPercent, yPercent);
@@ -95,7 +108,20 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
                 rightJoystick(xPercent, yPercent);
                 break;
 
+        }*/
+        switch (id){
+            case R.id.Joy1:
+                xJ1 = xPercent;
+                yJ1 = yPercent;
+                break;
+
+            case R.id.Joy2:
+                xJ2 = xPercent;
+                yJ2 = yPercent;
+                break;
         }
+        leftJoystick(xJ1, yJ1);
+        rightJoystick(xJ2, yJ2);
 
     }
 
@@ -108,7 +134,7 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
                 btSocket.close(); //close connection
             }
             catch (IOException e)
-            { msg("Error");}
+            {} //msg("Error");}
         }
         finish(); //return to the first layout
 
@@ -121,7 +147,7 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
     {
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -142,7 +168,7 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     public void leftJoystick(float xPercent, float yPercent){
         if (btSocket!=null)
@@ -150,45 +176,45 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
             if ((xPercent>0.2) && (yPercent<0.5) && (yPercent>-0.5)){
                 try
                 {
-                    btSocket.getOutputStream().write("1D".toString().getBytes());
+                    btSocket.getOutputStream().write("D".toString().getBytes());
                     Log.d("1D", "1D");
                 }
                 catch (IOException e)
                 {
-                    msg("Error");
+                   // msg("Error");
                 }
             }
             else if ((xPercent<-0.2) && (yPercent<0.5) && (yPercent>-0.5)){
                 Log.d("1G", "1G");
                 try
                 {
-                    btSocket.getOutputStream().write("1G".toString().getBytes());
+                    btSocket.getOutputStream().write("G".toString().getBytes());
                 }
                 catch (IOException e)
                 {
-                    msg("Error");
+                    //msg("Error");
                 }
             }
             else if ((yPercent<-0.2) && (xPercent<0.5) &&(xPercent>-0.5)){
                 Log.d("1H", "1H");
                 try
                 {
-                    btSocket.getOutputStream().write("1H".toString().getBytes());
+                    btSocket.getOutputStream().write("H".toString().getBytes());
                 }
                 catch (IOException e)
                 {
-                    msg("Error");
+                    //msg("Error");
                 }
             }
             else if ((yPercent>0.2) && (xPercent<0.5) &&(xPercent>-0.5)){
                 Log.d("1B", "1B");
                 try
                 {
-                    btSocket.getOutputStream().write("1B".toString().getBytes());
+                    btSocket.getOutputStream().write("B".toString().getBytes());
                 }
                 catch (IOException e)
                 {
-                    msg("Error");
+                    //msg("Error");
                 }
             }
 
@@ -201,95 +227,46 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
             if ((xPercent>0.2) && (yPercent<0.5) && (yPercent>-0.5)){
                 try
                 {
-                    btSocket.getOutputStream().write("2D".toString().getBytes());
+                    btSocket.getOutputStream().write("d".toString().getBytes());
                 }
                 catch (IOException e)
                 {
-                    msg("Error");
+                    //msg("Error");
                 }
             }
             else if ((xPercent<-0.2) && (yPercent<0.5) && (yPercent>-0.5)){
                 try
                 {
-                    btSocket.getOutputStream().write("2G".toString().getBytes());
+                    btSocket.getOutputStream().write("g".toString().getBytes());
                 }
                 catch (IOException e)
                 {
-                    msg("Error");
+                    //msg("Error");
                 }
             }
             else if ((yPercent>0.2) && (xPercent<0.5) &&(xPercent>-0.5)){
                 try
                 {
-                    btSocket.getOutputStream().write("2H".toString().getBytes());
+                    btSocket.getOutputStream().write("b".toString().getBytes());
                 }
                 catch (IOException e)
                 {
-                    msg("Error");
+                    //msg("Error");
                 }
             }
             else if ((yPercent<-0.2) && (xPercent<0.5) &&(xPercent>-0.5)){
                 try
                 {
-                    btSocket.getOutputStream().write("2B".toString().getBytes());
+                    btSocket.getOutputStream().write("h".toString().getBytes());
                 }
                 catch (IOException e)
                 {
-                    msg("Error");
+                    //msg("Error");
                 }
             }
 
         }
     }
 
-    private class ConnectBT extends AsyncTask<Void, Void, Void>  // UI thread
-    {
-        private boolean ConnectSuccess = true; //if it's here, it's almost connected
 
-        @Override
-        protected void onPreExecute()
-        {
-            progress = ProgressDialog.show(JoystickController.this, "Connecting...", "Please wait!!!");  //show a progress dialog
-        }
-
-        @Override
-        protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
-        {
-            try
-            {
-                if (btSocket == null || !isBtConnected)
-                {
-                    myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
-                    BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);//connects to the device's address and checks if it's available
-                    btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
-                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-                    btSocket.connect();//start connection
-                }
-            }
-            catch (IOException e)
-            {
-                ConnectSuccess = false;//if the try failed, you can check the exception here
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
-        {
-            super.onPostExecute(result);
-
-            if (!ConnectSuccess)
-            {
-                msg("Connection Failed. Is it a SPP Bluetooth? Try again.");
-                finish();
-            }
-            else
-            {
-                msg("Connected.");
-                isBtConnected = true;
-            }
-            progress.dismiss();
-        }
-
-
-    }
 }
