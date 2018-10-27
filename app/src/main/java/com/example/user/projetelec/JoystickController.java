@@ -113,15 +113,17 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
             case R.id.Joy1:
                 xJ1 = xPercent;
                 yJ1 = yPercent;
+                leftJoystick(xJ1, yJ1);
                 break;
 
             case R.id.Joy2:
                 xJ2 = xPercent;
                 yJ2 = yPercent;
+                rightJoystick(xJ2, yJ2);
                 break;
         }
-        leftJoystick(xJ1, yJ1);
-        rightJoystick(xJ2, yJ2);
+
+
 
     }
 
@@ -217,6 +219,16 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
                     //msg("Error");
                 }
             }
+            else if ((yPercent<0.1) && (yPercent>-0.1) && (xPercent<0.1) && (xPercent>-0.1)){
+                Log.d("1N", "1N");
+                try
+                {
+                    btSocket.getOutputStream().write("f".toString().getBytes());
+                }
+                catch (IOException e){
+                    //msg("Error");
+                }
+            }
 
         }
     }
@@ -261,6 +273,16 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
                 }
                 catch (IOException e)
                 {
+                    //msg("Error");
+                }
+            }
+            else if ((yPercent==0) && (xPercent==0)){
+                Log.d("2N", "2N");
+                try
+                {
+                    btSocket.getOutputStream().write("f".toString().getBytes());
+                }
+                catch (IOException e){
                     //msg("Error");
                 }
             }

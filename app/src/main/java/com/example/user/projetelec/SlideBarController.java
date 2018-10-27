@@ -160,6 +160,17 @@ public class SlideBarController extends AppCompatActivity implements SlideBarVie
                     msg("Error");
                 }
             }
+            else if ((position > -0.25) && (position < 0.25)){
+                try
+                {
+                    btSocket.getOutputStream().write("f".toString().getBytes());
+                    Log.d("Vertical", "Vf");
+                }
+                catch (IOException e)
+                {
+                    msg("Error");
+                }
+            }
          }
     }
 
@@ -225,6 +236,17 @@ public class SlideBarController extends AppCompatActivity implements SlideBarVie
                 {
                     btSocket.getOutputStream().write("6".toString().getBytes());
                     Log.d("Horizontal", "H-3");
+                }
+                catch (IOException e)
+                {
+                    msg("Error");
+                }
+            }
+            else if ((position > -0.25) && (position < 0.25)){
+                try
+                {
+                    btSocket.getOutputStream().write("f".toString().getBytes());
+                    Log.d("Vertical", "Vf");
                 }
                 catch (IOException e)
                 {
