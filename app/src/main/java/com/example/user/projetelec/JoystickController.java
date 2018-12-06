@@ -31,6 +31,7 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
     Button btnDis;
     Button commands;
     Button pince;
+    Button check;
     String address = null;
     private ProgressDialog progress;
     BluetoothAdapter myBluetooth = null;
@@ -57,6 +58,7 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
         commands = findViewById(R.id.commandes);
         joy1=findViewById(R.id.Joy1);
         joy2=findViewById(R.id.Joy2);
+        check=findViewById(R.id.check);
 
 
 
@@ -82,6 +84,23 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
             }
         });
 
+
+
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (btSocket != null){
+                    try {
+                        btSocket.getOutputStream().write("C".toString().getBytes());
+                    }
+                    catch (IOException e){
+
+                    }
+                }
+            }
+        });
+
+
         commands.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,18 +116,6 @@ public class JoystickController extends AppCompatActivity implements JoystickVie
 
     @Override
     public void onJoystickMoved(float xPercent, float yPercent, int id){
-        /*switch (id){
-            case R.id.Joy1:
-                Log.d("Left", "Xpercent : " + xPercent + " Y percent : " + yPercent);
-                leftJoystick(xPercent, yPercent);
-                break;
-
-            case R.id.Joy2:
-                Log.d("Right", "Xpercent : " + xPercent + " Y percent : " + yPercent);
-                rightJoystick(xPercent, yPercent);
-                break;
-
-        }*/
         switch (id){
             case R.id.Joy1:
                 xJ1 = xPercent;

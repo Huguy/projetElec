@@ -43,14 +43,24 @@ android:layout_height="match_parent"
             android:layout_alignParentLeft="true"/>
 
 
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Commandes"
-            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="175dp"
+            android:layout_marginTop="0dp"
+            android:text="Check"
+            android:id="@+id/check"/>
+
+        <Button
             android:id="@+id/commandes"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="149dp"
+            android:text="Commandes" />
 
         <Button
             android:layout_width="wrap_content"

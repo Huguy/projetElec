@@ -18,13 +18,13 @@ import java.util.UUID;
 
 import static com.example.user.projetelec.MainActivity.EXTRA_ADDRESS;
 
-public class SlideBarController extends AppCompatActivity implements SlideBarView.SlideBarListener {
+public class SlideBarController extends AppCompatActivity implements JoystickView.JoystickListener {
 
-    SlideBarView slide1;
-    SlideBarView slide2;
+    JoystickView joy1;
     Button dis;
     Button commands;
     Button bras;
+    Button check;
     BluetoothAdapter myBluetooth = null;
     BluetoothSocket btSocket = null;
     String address = null;
@@ -32,6 +32,7 @@ public class SlideBarController extends AppCompatActivity implements SlideBarVie
     //SPP UUID. Look for it
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private ProgressDialog progress;
+    private float xJ1, yJ1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +42,12 @@ public class SlideBarController extends AppCompatActivity implements SlideBarVie
         Intent newint = getIntent();
         address = newint.getStringExtra(EXTRA_ADDRESS); //receive the address of the bluetooth device
 
-        slide1 = findViewById(R.id.slide1);
-        slide2 = findViewById(R.id.slide2);
+        joy1 = findViewById(R.id.JoyMiddle);
 
         dis = findViewById(R.id.disconnect);
         commands = findViewById(R.id.commandes);
         bras = findViewById(R.id.bras);
+        check = findViewById(R.id.check);
 
         dis.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +65,20 @@ public class SlideBarController extends AppCompatActivity implements SlideBarVie
             }
         });
 
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (btSocket != null){
+                    try {
+                        btSocket.getOutputStream().write("C".toString().getBytes());
+                    }
+                    catch (IOException e){
+
+                    }
+                }
+            }
+        });
+
         commands.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,183 +92,76 @@ public class SlideBarController extends AppCompatActivity implements SlideBarVie
 
     }
 
+
     @Override
-    public void onSlideMoved(float position, int id){
-        switch(id){
-            case R.id.slide1 :
-                Log.d("Vertical :", "position : " + position);
-                VerticalSlide(position);
-                break;
-            case R.id.slide2 :
-                Log.d("Horizontal", "position : " + position);
-                HorizontalSlide(position);
-                break;
-        }
+    public void onJoystickMoved(float xPercent, float yPercent, int id){
+
+        xJ1 = xPercent;
+        yJ1 = yPercent;
+        controlJoystick(xJ1, yJ1);
+
+
     }
 
 
-    private void VerticalSlide(float position){
+
+    private void controlJoystick(float xPercent, float yPercent){
          if (btSocket!=null){
-            if (position > 0.25 && position < 0.5){
-                try
-                {
-                    btSocket.getOutputStream().write("i".toString().getBytes());
-                    Log.d("Vertical", "V1");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if (position > 0.5 && position <0.75){
-                try
-                {
-                    btSocket.getOutputStream().write("o".toString().getBytes());
-                    Log.d("Vertical", "V2");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if (position > 0.75) {
-                try
-                {
-                    btSocket.getOutputStream().write("p".toString().getBytes());
-                    Log.d("Vertical", "V3");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if (position < -0.25 && position > -0.5){
-                try
-                {
-                    btSocket.getOutputStream().write("w".toString().getBytes());
-                    Log.d("Vertical", "V-1");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if (position < -0.5 && position > -0.75){
-                try
-                {
-                    btSocket.getOutputStream().write("x".toString().getBytes());
-                    Log.d("Vertical", "V-2");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if (position < -0.75){
-                try
-                {
-                    btSocket.getOutputStream().write("c".toString().getBytes());
-                    Log.d("Vertical", "V-3");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if ((position > -0.25) && (position < 0.25)){
-                try
-                {
-                    btSocket.getOutputStream().write("f".toString().getBytes());
-                    Log.d("Vertical", "Vf");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
+             if ((xPercent>0.2) && (yPercent<0.5) && (yPercent>-0.5)){
+                 try
+                 {
+                     btSocket.getOutputStream().write("R".toString().getBytes());
+                     Log.d("1R", "1R");
+                 }
+                 catch (IOException e)
+                 {
+                     // msg("Error");
+                 }
+             }
+             else if ((xPercent<-0.2) && (yPercent<0.5) && (yPercent>-0.5)){
+                 Log.d("1r", "1r");
+                 try
+                 {
+                     btSocket.getOutputStream().write("r".toString().getBytes());
+                 }
+                 catch (IOException e)
+                 {
+                     //msg("Error");
+                 }
+             }
+             else if ((yPercent<-0.2) && (xPercent<0.5) &&(xPercent>-0.5)){
+                 Log.d("1S", "1S");
+                 try
+                 {
+                     btSocket.getOutputStream().write("S".toString().getBytes());
+                 }
+                 catch (IOException e)
+                 {
+                     //msg("Error");
+                 }
+             }
+             else if ((yPercent>0.2) && (xPercent<0.5) &&(xPercent>-0.5)){
+                 Log.d("1s", "1s");
+                 try
+                 {
+                     btSocket.getOutputStream().write("s".toString().getBytes());
+                 }
+                 catch (IOException e)
+                 {
+                     //msg("Error");
+                 }
+             }
+             else if ((yPercent<0.1) && (yPercent>-0.1) && (xPercent<0.1) && (xPercent>-0.1)){
+                 Log.d("1N", "1N");
+                 try
+                 {
+                     btSocket.getOutputStream().write("f".toString().getBytes());
+                 }
+                 catch (IOException e){
+                     //msg("Error");
+                 }
+             }
          }
-    }
-
-    private void HorizontalSlide(float position){
-        if (btSocket!=null){
-            if (position > 0.25 && position < 0.5){
-                try
-                {
-                    btSocket.getOutputStream().write("1".toString().getBytes());
-                    Log.d("Horizontal", "H1");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if (position > 0.5 && position <0.75){
-                try
-                {
-                    btSocket.getOutputStream().write("2".toString().getBytes());
-                    Log.d("Horizontal", "H2");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if (position > 0.75) {
-                try
-                {
-                    btSocket.getOutputStream().write("3".toString().getBytes());
-                    Log.d("Horizontal", "H3");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if (position < -0.25 && position > -0.5){
-                try
-                {
-                    btSocket.getOutputStream().write("4".toString().getBytes());
-                    Log.d("Horizontal", "H-1");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if (position < -0.5 && position > -0.75){
-                try
-                {
-                    btSocket.getOutputStream().write("5".toString().getBytes());
-                    Log.d("Horizontal", "H-2");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if (position < -0.75){
-                try
-                {
-                    btSocket.getOutputStream().write("6".toString().getBytes());
-                    Log.d("Horizontal", "H-3");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-            else if ((position > -0.25) && (position < 0.25)){
-                try
-                {
-                    btSocket.getOutputStream().write("f".toString().getBytes());
-                    Log.d("Vertical", "Vf");
-                }
-                catch (IOException e)
-                {
-                    msg("Error");
-                }
-            }
-        }
     }
 
 
