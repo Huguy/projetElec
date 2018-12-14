@@ -32,7 +32,7 @@ public class SlideBarController extends AppCompatActivity implements JoystickVie
     //SPP UUID. Look for it
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private ProgressDialog progress;
-    private float xJ1, yJ1;
+    private float xJ3, yJ3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +59,7 @@ public class SlideBarController extends AppCompatActivity implements JoystickVie
         bras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SlideBarController.this, JoystickController.class);
-                i.putExtra(EXTRA_ADDRESS, address); //this will be received at ledControl (class) Activity
-                startActivity(i);
+                finish();
             }
         });
 
@@ -95,17 +93,21 @@ public class SlideBarController extends AppCompatActivity implements JoystickVie
 
     @Override
     public void onJoystickMoved(float xPercent, float yPercent, int id){
+        switch (id){
+            case R.id.JoyMiddle :
+                xJ3 = xPercent;
+                yJ3 = yPercent;
+                controlJoystick2(xJ3, yJ3);
+                break;
+        }
 
-        xJ1 = xPercent;
-        yJ1 = yPercent;
-        controlJoystick(xJ1, yJ1);
 
 
     }
 
 
 
-    private void controlJoystick(float xPercent, float yPercent){
+    private void controlJoystick2(float xPercent, float yPercent){
          if (btSocket!=null){
              if ((xPercent>0.2) && (yPercent<0.5) && (yPercent>-0.5)){
                  try
